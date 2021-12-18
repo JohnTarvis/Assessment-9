@@ -10,6 +10,8 @@ import { Route, Switch } from "react-router-dom";
 import Menu from "./Menu";
 import MenuItem from "./MenuItem";
 
+import NewItemForm from "./NewItemForm";
+
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   // const [menuItems, setMenuItems] = useState([]);
@@ -20,15 +22,20 @@ function App() {
     async function getMenuItems() {
         let snacks = await SnackOrBoozeApi.getSnacks();
         let drinks = await SnackOrBoozeApi.getDrinks();
-        // let items = [...snacks,...drinks];
-        // console.log('real items ',items);
         setDrinkItems(drinks);
         setSnackItems(snacks);
-        // setMenuItems(items);
         setIsLoading(false);
     }
     getMenuItems();
   }, []);
+
+  async function addItem(data){
+    await SnackOrBoozeApi.addMenuItem(data);
+    let snacks = await SnackOrBoozeApi.getSnacks();
+    let drinks = await SnackOrBoozeApi.getDrinks();
+    setDrinkItems(drinks);
+    setSnackItems(snacks);
+  }
 
   if (isLoading) {
     return <p>Loading &hellip;</p>;
@@ -56,6 +63,10 @@ function App() {
             </Route>
             <Route path="/drinks/:id">
               <MenuItem menuItems={drinkItems} cantFind="/drinks" />
+            </Route>
+
+            <Route path="/add">
+              <NewItemForm addItem={addItem}/>
             </Route>
 
             <Route>

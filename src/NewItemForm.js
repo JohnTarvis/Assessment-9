@@ -1,5 +1,16 @@
 import React, { useState } from "react";
 
+import {
+  Card,
+  CardBody,
+  CardText,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input
+} from "reactstrap";
+
 /** Form for creating a new item to add to a list.
  *
  * Has state for the name/quantity of the item; on submission,
@@ -7,8 +18,15 @@ import React, { useState } from "react";
  *
  */
 
+
 const NewItemForm = ({ addItem }) => {
-  const INITIAL_STATE = {};
+  const INITIAL_STATE = {
+    category:"snacks",
+    name:"",
+    description:"",
+    recipe:"",
+    serve:""
+  };
   const [formData, setFormData] = useState(INITIAL_STATE);
 
   /** Send {name, quantity} to parent
@@ -35,6 +53,13 @@ const NewItemForm = ({ addItem }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <label htmlFor="category">category:</label>
+      <input
+        id="category"
+        name="category"
+        value={formData.category}
+        onChange={handleChange}
+      />
       <label htmlFor="name">Name:</label>
       <input
         id="name"
